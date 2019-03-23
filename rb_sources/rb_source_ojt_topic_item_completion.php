@@ -196,7 +196,7 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                 'comment',
                 get_string('comment', 'rb_source_ojt_topic_item_completion'),
                 'base.comment',
-                array('displayfunc' => 'format_string')
+                array('displayfunc' => 'plaintext')
             ),
 
         );

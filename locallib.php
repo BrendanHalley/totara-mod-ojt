@@ -48,12 +48,11 @@ function ojt_get_user_ojt($ojtid, $userid) {
         return $ojt;
     }
 
-    // Add items and completion info.
     list($insql, $params) = $DB->get_in_or_equal(array_keys($ojt->topics));
-    $sql = "SELECT i.*, CASE WHEN c.status IS NULL THEN ".OJT_INCOMPLETE." ELSE c.status END AS status,
+    $sql = "SELECT i.*, c.id AS completionid, CASE WHEN c.status IS NULL THEN ".OJT_INCOMPLETE." ELSE c.status END AS status,
             c.comment, c.timemodified, c.modifiedby,bw.witnessedby,bw.timewitnessed,".
-            get_all_user_name_fields(true, 'moduser', '', 'modifier').",".
-            get_all_user_name_fields(true, 'witnessuser', '', 'itemwitness')."
+        get_all_user_name_fields(true, 'moduser', '', 'modifier').",".
+        get_all_user_name_fields(true, 'witnessuser', '', 'itemwitness')."
         FROM {ojt_topic_item} i
         LEFT JOIN {ojt_completion} c ON i.id = c.topicitemid AND c.type = ? AND c.userid = ?
         LEFT JOIN {user} moduser ON c.modifiedby = moduser.id
@@ -62,10 +61,10 @@ function ojt_get_user_ojt($ojtid, $userid) {
         WHERE i.topicid {$insql}
         ORDER BY i.topicid, i.id";
     $params = array_merge(array(OJT_CTYPE_TOPICITEM, $userid, $userid), $params);
-    $items = $DB->get_records_sql($sql, $params);
+    $items = $DB->get_recordset_sql($sql, $params);
 
     foreach ($items as $i => $item) {
-        $ojt->topics[$item->topicid]->items[$i] = $item;
+        $ojt->topics[$item->topicid]->items[] = $item;
     }
 
     return $ojt;

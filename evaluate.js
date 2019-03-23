@@ -98,6 +98,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
         $('.ojt-completion-comment').change(function () {
             var commentinput = this;
             var itemid = $(this).attr('ojt-item-id');
+            var completionid = $(this).attr('ojt-completion-id');
             $.ajax({
                 url: M.cfg.wwwroot+'/mod/ojt/evaluatesave.php',
                 type: 'POST',
@@ -107,6 +108,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     'bid': config.ojtid,
                     'userid': config.userid,
                     'id': itemid,
+                    'completionid': completionid,
                     'comment': $(commentinput).val()
                 },
                 success: function(data) {

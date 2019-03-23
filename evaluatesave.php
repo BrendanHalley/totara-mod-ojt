@@ -36,7 +36,9 @@ require_sesskey();
 $userid = required_param('userid', PARAM_INT);
 $ojtid  = required_param('bid', PARAM_INT);
 $itemid = required_param('id', PARAM_INT);
+$completionid = optional_param('completionid', NULL, PARAM_INT);
 $action = required_param('action', PARAM_TEXT);
+
 
 $user = $DB->get_record('user', array('id' => $userid), '*', MUST_EXIST);
 $ojt  = $DB->get_record('ojt', array('id' => $ojtid), '*', MUST_EXIST);
@@ -59,12 +61,7 @@ $item = $DB->get_record_sql($sql, array($ojt->id, $itemid), MUST_EXIST);
 $dateformat = get_string('strftimedatetimeshort', 'core_langconfig');
 
 // Update/insert the user completion record
-$params = array('userid' => $userid,
-    'ojtid' => $ojtid,
-    'topicid' => $item->topicid,
-    'topicitemid' => $itemid,
-    'type' => OJT_CTYPE_TOPICITEM);
-if ($completion = $DB->get_record('ojt_completion', $params)) {
+if ($completion = $DB->get_record('ojt_completion', array('id' => $completionid))) {
     // Update
     switch ($action) {
         case 'togglecompletion':
@@ -72,8 +69,6 @@ if ($completion = $DB->get_record('ojt_completion', $params)) {
             break;
         case 'savecomment':
             $completion->comment = required_param('comment', PARAM_TEXT);
-            // append a date to the comment string
-            $completion->comment .= ' - '.userdate(time(), $dateformat).'.';
             break;
         default:
     }
@@ -82,15 +77,17 @@ if ($completion = $DB->get_record('ojt_completion', $params)) {
     $DB->update_record('ojt_completion', $completion);
 } else {
     // Insert
-    $completion = (object)$params;
+    $completion = (object)array('userid' => $userid,
+        'ojtid' => $ojtid,
+        'topicid' => $item->topicid,
+        'topicitemid' => $itemid,
+        'type' => OJT_CTYPE_TOPICITEM);
     switch ($action) {
         case 'togglecompletion':
             $completion->status = OJT_COMPLETE;
             break;
         case 'savecomment':
             $completion->comment = required_param('comment', PARAM_TEXT);
-            // append a date to the comment string
-            $completion->comment .= ' - '.userdate(time(), $dateformat).'.';
             break;
         default:
     }
