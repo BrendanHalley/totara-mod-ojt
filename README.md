@@ -1,6 +1,6 @@
 # Totara OJT activity
 
-See https://github.com/catalyst/totara-mod-ojt/wiki for overview and help ;)
+Feature list to follow.
 
 #### Credits
 * Contributed to the open source community through development commissioned by Customs New Zealand :)
