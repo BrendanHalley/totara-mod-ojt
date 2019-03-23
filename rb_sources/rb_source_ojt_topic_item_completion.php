@@ -62,6 +62,8 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('ojttopicitemcompletion', 'rb_source_ojt_topic_item_completion');
         $this->sourcewhere = 'base.type = '.OJT_CTYPE_TOPICITEM;
+        $this->usedcomponents[] = 'mod_ojt';
+        $this->usedcomponents[] = 'totara_cohort';
 
         parent::__construct();
     }
@@ -155,14 +157,14 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                 'name',
                 get_string('topic', 'rb_source_ojt_topic_item_completion'),
                 'ojt_topic.name',
-                array('joins' => 'ojt_topic')
+                array('joins' => 'ojt_topic', 'displayfunc' => 'format_string')
             ),
             new rb_column_option(
                 'ojt_topic_item',
                 'name',
                 get_string('topicitem', 'rb_source_ojt_topic_item_completion'),
                 'ojt_topic_item.name',
-                array('joins' => 'ojt_topic_item')
+                array('joins' => 'ojt_topic_item', 'displayfunc' => 'format_string')
             ),
             new rb_column_option(
                 'base',
@@ -185,7 +187,7 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                 $DB->sql_fullname("modifyuser.firstname", "modifyuser.lastname"),
                 array(
                     'joins' => 'modifyuser',
-                    'displayfunc' => 'link_user',
+                    'displayfunc' => 'user_link',
                     'extrafields' => array('user_id' => "modifyuser.id"),
                 )
             ),
@@ -193,7 +195,8 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                 'base',
                 'comment',
                 get_string('comment', 'rb_source_ojt_topic_item_completion'),
-                'base.comment'
+                'base.comment',
+                array('displayfunc' => 'format_string')
             ),
 
         );
@@ -379,34 +382,6 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
 
         return $requiredcolumns;
     }
-
-    //
-    //
-    // Source specific column display methods
-    //
-    //
-
-    function rb_display_ojt_completion_status($status, $row, $isexport) {
-        if (empty($status)) {
-            return get_string('completionstatus'.OJT_INCOMPLETE, 'ojt');
-        } else {
-            return get_string('completionstatus'.$status, 'ojt');
-        }
-    }
-
-    function rb_display_ojt_link($ojtname, $row, $isexport) {
-        return html_writer::link(new moodle_url('/mod/ojt/evaluate.php',
-            array('userid' => $row->userid, 'bid' => $row->ojtid)), $ojtname);
-
-    }
-
-    function rb_display_ojt_evaluate_link($ojtname, $row, $isexport) {
-        return html_writer::link(new moodle_url('/mod/ojt/evaluate.php',
-            array('userid' => $row->userid, 'bid' => $row->ojtid)), get_string('evaluate', 'rb_source_ojt_topic_item_completion'));
-
-    }
-
-
 
     //
     //
