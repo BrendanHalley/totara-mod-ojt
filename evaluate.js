@@ -56,9 +56,11 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
         var config = this.config;
 
         // Init ojt completion toggles.
-        $('.ojt-completion-toggle').on('click', function () {
+        $(document).on('click', '.ojt-completion-toggle', function () {
             var completionimg = $(this);
+            var completionid = $(this).closest('.ojt-eval-actions').attr('ojt-completion-id');
             var itemid = $(this).closest('.ojt-eval-actions').attr('ojt-item-id');
+            var modifiedstr = $(this).closest('.ojt-eval-actions').siblings('.mod-ojt-modifiedstr');
             $.ajax({
                 url: M.cfg.wwwroot+'/mod/ojt/evaluatesave.php',
                 type: 'POST',
@@ -67,6 +69,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     'action': 'togglecompletion',
                     'bid': config.ojtid,
                     'userid': config.userid,
+                    'completionid': completionid,
                     'id': itemid
                 },
                 beforeSend: function() {
@@ -83,7 +86,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     ojtobj.setTopicStatusIcon(data.topic.status, $('#ojt-topic-'+data.topic.topicid+' .ojt-topic-status'));
 
                     // Update modified string.
-                    $('.mod-ojt-modifiedstr[ojt-item-id='+itemid+']').html(data.modifiedstr);
+                    modifiedstr.html(data.modifiedstr);
 
                     $(completionimg).next('.ojt-completion-comment').focus();
                 },
@@ -95,10 +98,11 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
         });
 
         // Init comment inputs
-        $('.ojt-completion-comment').change(function () {
+        $(document).on('change', '.ojt-completion-comment', function () {
             var commentinput = this;
             var itemid = $(this).attr('ojt-item-id');
             var completionid = $(this).attr('ojt-completion-id');
+            var commentroot = $(this).closest('.ojt-eval-actions');
             $.ajax({
                 url: M.cfg.wwwroot+'/mod/ojt/evaluatesave.php',
                 type: 'POST',
@@ -116,9 +120,9 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     // Update comment text box, so we can get the date in there too
                     $(commentinput).val(data.item.comment);
                     // Update the comment print box
-                    $('.ojt-completion-comment-print[ojt-item-id='+itemid+']').html(data.item.comment);
+                    commentroot.find('.ojt-completion-comment-print').html(data.item.comment);
 
-                    $('.mod-ojt-modifiedstr[ojt-item-id='+itemid+']').html(data.modifiedstr);
+                    commentroot.find('.mod-ojt-modifiedstr').html(data.modifiedstr);
                 },
                 error: function (data) {
                     console.log(data);
