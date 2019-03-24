@@ -135,7 +135,11 @@ class mod_ojt_renderer extends plugin_renderer_base {
                 if(empty($lastid) || $lastid != $item->id) {
                     $optionalstr = $item->completionreq == OJT_OPTIONAL ?
                         html_writer::tag('em', ' (' . get_string('optional', 'ojt') . ')') : '';
-                    $row[] = format_string($item->name) . $optionalstr;
+                    $rowcontent = format_string($item->name) . $optionalstr . '<br> ';
+                    $rowcontent .= html_writer::start_tag('div', array('class' => 'ojt-add-action', 'ojt-item-id' => $item->id));
+                    $rowcontent .= $this->output->flex_icon('plus', ['alt' => get_string('addnewcompletion', 'ojt')]);
+                    $rowcontent .= html_writer::end_tag('div');
+                    $row[] = $rowcontent;
                 } else {
                     $row[] = "";
                 }
@@ -208,7 +212,6 @@ class mod_ojt_renderer extends plugin_renderer_base {
                 $lastid = $item->id;
                 $table->data[] = $row;
             }
-
             $out .= html_writer::table($table);
 
             // Topic signoff

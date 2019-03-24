@@ -199,6 +199,19 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                 }
             });
         });
+
+        $(document).on('click', '.ojt-add-action', function() {
+            var topicitem = $(this).attr('ojt-item-id');
+            var lastcomment = $('.ojt-eval-actions[ojt-item-id="'+topicitem+'"]').last();
+            var clonedcomment = lastcomment.closest('tr').clone();
+            // Clean up - not overly pretty may refactor into an ajax call later
+            clonedcomment.find('.c0').empty();
+            clonedcomment.find('.ojt-eval-actions').attr('ojt-completion-id', '');
+            clonedcomment.find('textarea').attr('ojt-completion-id', '').text('');
+            clonedcomment.find('.mod-ojt-modifiedstr').text('');
+            clonedcomment.find('.ojt-completion-comment-print').attr('ojt-completion-id', '').text('');
+            lastcomment.closest('tr').after(clonedcomment);
+        });
     },  // init
 
 	replaceIcon: function (icon, newiconname) {

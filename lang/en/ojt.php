@@ -95,3 +95,4 @@ $string['type1'] = 'Topic';
 $string['type2'] = 'Item';
 $string['updatefiles'] = 'Update files';
 $string['witnessed'] = 'Witnessed';
+$string['addnewcompletion'] = 'Add new comment';
