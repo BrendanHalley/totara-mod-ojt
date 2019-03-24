@@ -254,6 +254,12 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                     'selectfunc' => 'ojt_completion_status_list',
                 )
             ),
+            new rb_filter_option(
+                'base',
+                'modifiedby',
+                get_string('modifiedby', 'rb_source_ojt_topic_item_completion'),
+                'text'
+            ),
         );
 
         // include some standard filters
