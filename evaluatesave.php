@@ -69,6 +69,8 @@ if ($completion = $DB->get_record('ojt_completion', array('id' => $completionid)
             break;
         case 'savecomment':
             $completion->comment = required_param('comment', PARAM_TEXT);
+            $completion->hours = number_format(required_param('hours', PARAM_FLOAT), 2, '.', '');
+
             break;
         default:
     }
@@ -88,6 +90,7 @@ if ($completion = $DB->get_record('ojt_completion', array('id' => $completionid)
             break;
         case 'savecomment':
             $completion->comment = required_param('comment', PARAM_TEXT);
+            $completion->hours = number_format(required_param('hours', PARAM_FLOAT), 2, '.', '');
             break;
         default:
     }

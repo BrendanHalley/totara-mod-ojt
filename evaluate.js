@@ -98,7 +98,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
         });
 
         // Init comment inputs
-        $(document).on('change', '.ojt-completion-comment', function () {
+        $(document).on('change', '.ojt-completion-comment,.ojt-completion-hours', function () {
             var commentinput = this;
             var itemid = $(this).attr('ojt-item-id');
             var completionid = $(this).attr('ojt-completion-id');
@@ -113,12 +113,14 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     'userid': config.userid,
                     'id': itemid,
                     'completionid': completionid,
-                    'comment': $(commentinput).val()
+                    'hours': commentroot.find('.ojt-completion-hours').val(),
+                    'comment': commentroot.find('.ojt-completion-comment').val()
                 },
                 success: function(data) {
 
                     // Update comment text box, so we can get the date in there too
-                    $(commentinput).val(data.item.comment);
+                    commentroot.find('.ojt-completion-comment').val(data.item.comment);
+                    commentroot.find('.ojt-completion-hours').val(data.item.hours);
                     // Update the comment print box
                     commentroot.find('.ojt-completion-comment-print').html(data.item.comment);
 

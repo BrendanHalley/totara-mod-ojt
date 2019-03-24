@@ -50,7 +50,7 @@ function ojt_get_user_ojt($ojtid, $userid) {
 
     list($insql, $params) = $DB->get_in_or_equal(array_keys($ojt->topics));
     $sql = "SELECT i.*, c.id AS completionid, CASE WHEN c.status IS NULL THEN ".OJT_INCOMPLETE." ELSE c.status END AS status,
-            c.comment, c.timemodified, c.modifiedby,bw.witnessedby,bw.timewitnessed,".
+            c.comment, c.hours, c.timemodified, c.modifiedby,bw.witnessedby,bw.timewitnessed,".
         get_all_user_name_fields(true, 'moduser', '', 'modifier').",".
         get_all_user_name_fields(true, 'witnessuser', '', 'itemwitness')."
         FROM {ojt_topic_item} i

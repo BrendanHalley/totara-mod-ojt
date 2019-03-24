@@ -147,9 +147,10 @@ class mod_ojt_renderer extends plugin_renderer_base {
                     $completionicon = $item->status == OJT_COMPLETE ? 'completion-manual-y' : 'completion-manual-n';
                     $cellcontent = html_writer::start_tag('div', array('class' => 'ojt-eval-actions', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= $this->output->flex_icon($completionicon, ['classes' => 'ojt-completion-toggle']);
-                    $cellcontent .= html_writer::tag('textarea', $item->comment,
-                        array('name' => 'comment-'.$item->id, 'rows' => 3,
+                    $cellcontent .= html_writer::tag('textarea', $item->comment, array('name' => 'comment-'.$item->id, 'rows' => 3,
                             'class' => 'ojt-completion-comment', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
+                    $cellcontent .= html_writer::tag('input', '', array('type' => 'text', 'name' => 'hours-'.$item->id, 'value' => $item->hours,
+                            'class' => 'ojt-completion-hours', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= html_writer::tag('div', format_text($item->comment, FORMAT_PLAIN),
                         array('class' => 'ojt-completion-comment-print', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= html_writer::end_tag('div');

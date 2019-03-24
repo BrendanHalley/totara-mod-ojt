@@ -198,6 +198,13 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                 'base.comment',
                 array('displayfunc' => 'plaintext')
             ),
+            new rb_column_option(
+                'base',
+                'hours',
+                get_string('hours', 'rb_source_ojt_topic_item_completion'),
+                'base.hours',
+                array('displayfunc' => 'plaintext')
+            ),
 
         );
 
