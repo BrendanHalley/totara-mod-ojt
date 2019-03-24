@@ -122,7 +122,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     // Update the comment print box
                     commentroot.find('.ojt-completion-comment-print').html(data.item.comment);
 
-                    commentroot.find('.mod-ojt-modifiedstr').html(data.modifiedstr);
+                    commentroot.siblings('.mod-ojt-modifiedstr').html(data.modifiedstr);
                 },
                 error: function (data) {
                     console.log(data);
