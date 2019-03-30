@@ -196,7 +196,14 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                 'comment',
                 get_string('comment', 'rb_source_ojt_topic_item_completion'),
                 'base.comment',
-                array('displayfunc' => 'format_string')
+                array('displayfunc' => 'plaintext')
+            ),
+            new rb_column_option(
+                'base',
+                'hours',
+                get_string('hours', 'rb_source_ojt_topic_item_completion'),
+                'base.hours',
+                array('displayfunc' => 'plaintext')
             ),
 
         );
@@ -253,6 +260,12 @@ class rb_source_ojt_topic_item_completion extends rb_base_source {
                 array(
                     'selectfunc' => 'ojt_completion_status_list',
                 )
+            ),
+            new rb_filter_option(
+                'base',
+                'modifiedby',
+                get_string('modifiedby', 'rb_source_ojt_topic_item_completion'),
+                'text'
             ),
         );
 

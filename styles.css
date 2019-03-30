@@ -10,6 +10,11 @@
     padding-bottom: 2em;
 }
 
+#mod-ojt-user-ojt .ojt-eval-actions {
+    display: table;
+    width: 100%;
+}
+
 .mod-ojt-topic-heading {
     padding-left: 0.8em;
 }
@@ -68,7 +73,15 @@ img.ojt-topic-completion-status {
 
 #mod-ojt-user-ojt textarea.ojt-completion-comment {
     margin-left: 0.4em;
-    width: 90%;
+    width: 70%;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+#mod-ojt-user-ojt input.ojt-completion-hours {
+    vertical-align: middle;
+    display: table-cell;
+    margin-left: 28px;
 }
 
 #ojt-eval-icon-templates {

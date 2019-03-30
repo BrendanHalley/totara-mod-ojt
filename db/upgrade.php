@@ -60,6 +60,21 @@ function xmldb_ojt_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2016031400, 'ojt');
     }
 
+    if ($oldversion < 2019032401) {
+
+        $table = new xmldb_table('ojt_completion');
+
+        $field = new xmldb_field('hours', XMLDB_TYPE_NUMBER, '11,2', null, XMLDB_NOTNULL, false, '0', null);
+
+        // Conditionally launch add field hours.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // ojt savepoint reached.
+        upgrade_mod_savepoint(true, 2019032401, 'ojt');
+    }
+
 
     return true;
 }

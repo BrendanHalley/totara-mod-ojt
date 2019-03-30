@@ -56,9 +56,11 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
         var config = this.config;
 
         // Init ojt completion toggles.
-        $('.ojt-completion-toggle').on('click', function () {
+        $(document).on('click', '.ojt-completion-toggle', function () {
             var completionimg = $(this);
+            var completionid = $(this).closest('.ojt-eval-actions').attr('ojt-completion-id');
             var itemid = $(this).closest('.ojt-eval-actions').attr('ojt-item-id');
+            var modifiedstr = $(this).closest('.ojt-eval-actions').siblings('.mod-ojt-modifiedstr');
             $.ajax({
                 url: M.cfg.wwwroot+'/mod/ojt/evaluatesave.php',
                 type: 'POST',
@@ -67,6 +69,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     'action': 'togglecompletion',
                     'bid': config.ojtid,
                     'userid': config.userid,
+                    'completionid': completionid,
                     'id': itemid
                 },
                 beforeSend: function() {
@@ -83,7 +86,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     ojtobj.setTopicStatusIcon(data.topic.status, $('#ojt-topic-'+data.topic.topicid+' .ojt-topic-status'));
 
                     // Update modified string.
-                    $('.mod-ojt-modifiedstr[ojt-item-id='+itemid+']').html(data.modifiedstr);
+                    modifiedstr.html(data.modifiedstr);
 
                     $(completionimg).next('.ojt-completion-comment').focus();
                 },
@@ -95,9 +98,11 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
         });
 
         // Init comment inputs
-        $('.ojt-completion-comment').change(function () {
+        $(document).on('change', '.ojt-completion-comment,.ojt-completion-hours', function () {
             var commentinput = this;
             var itemid = $(this).attr('ojt-item-id');
+            var completionid = $(this).attr('ojt-completion-id');
+            var commentroot = $(this).closest('.ojt-eval-actions');
             $.ajax({
                 url: M.cfg.wwwroot+'/mod/ojt/evaluatesave.php',
                 type: 'POST',
@@ -107,16 +112,19 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     'bid': config.ojtid,
                     'userid': config.userid,
                     'id': itemid,
-                    'comment': $(commentinput).val()
+                    'completionid': completionid,
+                    'hours': commentroot.find('.ojt-completion-hours').val(),
+                    'comment': commentroot.find('.ojt-completion-comment').val()
                 },
                 success: function(data) {
 
                     // Update comment text box, so we can get the date in there too
-                    $(commentinput).val(data.item.comment);
+                    commentroot.find('.ojt-completion-comment').val(data.item.comment);
+                    commentroot.find('.ojt-completion-hours').val(data.item.hours);
                     // Update the comment print box
-                    $('.ojt-completion-comment-print[ojt-item-id='+itemid+']').html(data.item.comment);
+                    commentroot.find('.ojt-completion-comment-print').html(data.item.comment);
 
-                    $('.mod-ojt-modifiedstr[ojt-item-id='+itemid+']').html(data.modifiedstr);
+                    commentroot.siblings('.mod-ojt-modifiedstr').html(data.modifiedstr);
                 },
                 error: function (data) {
                     console.log(data);
@@ -192,6 +200,19 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                     alert('Error saving signoff...');
                 }
             });
+        });
+
+        $(document).on('click', '.ojt-add-action', function() {
+            var topicitem = $(this).attr('ojt-item-id');
+            var lastcomment = $('.ojt-eval-actions[ojt-item-id="'+topicitem+'"]').last();
+            var clonedcomment = lastcomment.closest('tr').clone();
+            // Clean up - not overly pretty may refactor into an ajax call later
+            clonedcomment.find('.c0').empty();
+            clonedcomment.find('.ojt-eval-actions').attr('ojt-completion-id', '');
+            clonedcomment.find('textarea').attr('ojt-completion-id', '').text('');
+            clonedcomment.find('.mod-ojt-modifiedstr').text('');
+            clonedcomment.find('.ojt-completion-comment-print').attr('ojt-completion-id', '').text('');
+            lastcomment.closest('tr').after(clonedcomment);
         });
     },  // init
 

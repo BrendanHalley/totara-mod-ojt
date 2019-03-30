@@ -89,6 +89,7 @@
         <FIELD NAME="topicitemid" TYPE="int" LENGTH="11" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="status" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="comment" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="hours" TYPE="number" LENGTH="11" NOTNULL="false" SEQUENCE="false" DEFAULT="0"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="11" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="modifiedby" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>

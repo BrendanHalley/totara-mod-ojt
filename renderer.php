@@ -128,21 +128,31 @@ class mod_ojt_renderer extends plugin_renderer_base {
                 $table->head = array('', '', get_string('witnessed', 'mod_ojt'));
             }
             $table->data = array();
+            $lastid = '';
 
             foreach ($topic->items as $item) {
                 $row = array();
-                $optionalstr = $item->completionreq == OJT_OPTIONAL ?
-                    html_writer::tag('em', ' ('.get_string('optional', 'ojt').')') : '';
-                $row[] = format_string($item->name).$optionalstr;
+                if(empty($lastid) || $lastid != $item->id) {
+                    $optionalstr = $item->completionreq == OJT_OPTIONAL ?
+                        html_writer::tag('em', ' (' . get_string('optional', 'ojt') . ')') : '';
+                    $rowcontent = format_string($item->name) . $optionalstr . '<br> ';
+                    $rowcontent .= html_writer::start_tag('div', array('class' => 'ojt-add-action', 'ojt-item-id' => $item->id));
+                    $rowcontent .= $this->output->flex_icon('plus', ['alt' => get_string('addnewcompletion', 'ojt')]);
+                    $rowcontent .= html_writer::end_tag('div');
+                    $row[] = $rowcontent;
+                } else {
+                    $row[] = "";
+                }
                 if ($evaluate) {
                     $completionicon = $item->status == OJT_COMPLETE ? 'completion-manual-y' : 'completion-manual-n';
-                    $cellcontent = html_writer::start_tag('div', array('class' => 'ojt-eval-actions', 'ojt-item-id' => $item->id));
+                    $cellcontent = html_writer::start_tag('div', array('class' => 'ojt-eval-actions', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= $this->output->flex_icon($completionicon, ['classes' => 'ojt-completion-toggle']);
-                    $cellcontent .= html_writer::tag('textarea', $item->comment,
-                        array('name' => 'comment-'.$item->id, 'rows' => 3,
-                            'class' => 'ojt-completion-comment', 'ojt-item-id' => $item->id));
+                    $cellcontent .= html_writer::tag('textarea', $item->comment, array('name' => 'comment-'.$item->id, 'rows' => 3,
+                            'class' => 'ojt-completion-comment', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
+                    $cellcontent .= html_writer::tag('input', '', array('type' => 'text', 'name' => 'hours-'.$item->id, 'value' => $item->hours,
+                            'class' => 'ojt-completion-hours', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid, 'size' => 5));
                     $cellcontent .= html_writer::tag('div', format_text($item->comment, FORMAT_PLAIN),
-                        array('class' => 'ojt-completion-comment-print', 'ojt-item-id' => $item->id));
+                        array('class' => 'ojt-completion-comment-print', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= html_writer::end_tag('div');
                 } else {
                     // Show static stuff.
@@ -200,10 +210,9 @@ class mod_ojt_renderer extends plugin_renderer_base {
 
                     $row[] = html_writer::tag('p', $cellcontent, array('class' => 'ojt-item-witness'));
                 }
-
+                $lastid = $item->id;
                 $table->data[] = $row;
             }
-
             $out .= html_writer::table($table);
 
             // Topic signoff
