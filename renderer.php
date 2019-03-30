@@ -150,7 +150,7 @@ class mod_ojt_renderer extends plugin_renderer_base {
                     $cellcontent .= html_writer::tag('textarea', $item->comment, array('name' => 'comment-'.$item->id, 'rows' => 3,
                             'class' => 'ojt-completion-comment', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= html_writer::tag('input', '', array('type' => 'text', 'name' => 'hours-'.$item->id, 'value' => $item->hours,
-                            'class' => 'ojt-completion-hours', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
+                            'class' => 'ojt-completion-hours', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid, 'size' => 5));
                     $cellcontent .= html_writer::tag('div', format_text($item->comment, FORMAT_PLAIN),
                         array('class' => 'ojt-completion-comment-print', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= html_writer::end_tag('div');
