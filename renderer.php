@@ -136,9 +136,11 @@ class mod_ojt_renderer extends plugin_renderer_base {
                     $optionalstr = $item->completionreq == OJT_OPTIONAL ?
                         html_writer::tag('em', ' (' . get_string('optional', 'ojt') . ')') : '';
                     $rowcontent = format_string($item->name) . $optionalstr . '<br> ';
-                    $rowcontent .= html_writer::start_tag('div', array('class' => 'ojt-add-action', 'ojt-item-id' => $item->id));
-                    $rowcontent .= $this->output->flex_icon('plus', ['alt' => get_string('addnewcompletion', 'ojt')]);
-                    $rowcontent .= html_writer::end_tag('div');
+                    if ($evaluate && isset($item->completionid)) {
+                        $rowcontent .= html_writer::start_tag('div', array('class' => 'ojt-add-action', 'ojt-item-id' => $item->id));
+                        $rowcontent .= $this->output->flex_icon('plus', ['alt' => get_string('addnewcompletion', 'ojt')]);
+                        $rowcontent .= html_writer::end_tag('div');
+                    }
                     $row[] = $rowcontent;
                 } else {
                     $row[] = "";
