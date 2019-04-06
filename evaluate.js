@@ -118,6 +118,11 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
                 },
                 success: function(data) {
 
+                    if(completionid === undefined) {
+                        commentroot.find('.ojt-completion-comment').attr('ojt-completion-id', data.item.id);
+                        commentroot.find('.ojt-completion-hours').attr('ojt-completion-id', data.item.id);
+                    }
+
                     // Update comment text box, so we can get the date in there too
                     commentroot.find('.ojt-completion-comment').val(data.item.comment);
                     commentroot.find('.ojt-completion-hours').val(data.item.hours);
@@ -208,10 +213,11 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
             var clonedcomment = lastcomment.closest('tr').clone();
             // Clean up - not overly pretty may refactor into an ajax call later
             clonedcomment.find('.c0').empty();
-            clonedcomment.find('.ojt-eval-actions').attr('ojt-completion-id', '');
-            clonedcomment.find('textarea').attr('ojt-completion-id', '').text('');
+            clonedcomment.find('.ojt-eval-actions').removeAttr('ojt-completion-id');
+            clonedcomment.find('.ojt-completion-hours').removeAttr('ojt-completion-id').val('');
+            clonedcomment.find('textarea').removeAttr('ojt-completion-id').text('');
             clonedcomment.find('.mod-ojt-modifiedstr').text('');
-            clonedcomment.find('.ojt-completion-comment-print').attr('ojt-completion-id', '').text('');
+            clonedcomment.find('.ojt-completion-comment-print').removeAttr('ojt-completion-id');
             lastcomment.closest('tr').after(clonedcomment);
         });
     },  // init
