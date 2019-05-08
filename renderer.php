@@ -148,7 +148,7 @@ class mod_ojt_renderer extends plugin_renderer_base {
                 if ($evaluate) {
                     $completionicon = $item->status == OJT_COMPLETE ? 'completion-manual-y' : 'completion-manual-n';
                     $cellcontent = html_writer::start_tag('div', array('class' => 'ojt-eval-actions', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
-                    $cellcontent .= $this->output->flex_icon($completionicon, ['classes' => 'ojt-completion-toggle']);
+                    $cellcontent .= $this->output->flex_icon($completionicon, ['classes' => 'ojt-completion-toggle', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid]);
                     $cellcontent .= html_writer::tag('textarea', $item->comment, array('name' => 'comment-'.$item->id, 'rows' => 3,
                             'class' => 'ojt-completion-comment', 'ojt-item-id' => $item->id, 'ojt-completion-id' => $item->completionid));
                     $cellcontent .= html_writer::tag('input', '', array('type' => 'text', 'name' => 'hours-'.$item->id, 'value' => $item->hours,

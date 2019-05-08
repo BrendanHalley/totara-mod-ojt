@@ -61,6 +61,7 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
             var completionid = $(this).closest('.ojt-eval-actions').attr('ojt-completion-id');
             var itemid = $(this).closest('.ojt-eval-actions').attr('ojt-item-id');
             var modifiedstr = $(this).closest('.ojt-eval-actions').siblings('.mod-ojt-modifiedstr');
+            var commentroot = $(this).closest('.ojt-eval-actions');
             $.ajax({
                 url: M.cfg.wwwroot+'/mod/ojt/evaluatesave.php',
                 type: 'POST',
@@ -87,6 +88,19 @@ M.mod_ojt_evaluate = M.mod_ojt_evaluate || {
 
                     // Update modified string.
                     modifiedstr.html(data.modifiedstr);
+
+                    if(completionid === undefined) {
+                        commentroot.find('.ojt-completion-comment').attr('ojt-completion-id', data.item.id);
+                        commentroot.find('.ojt-completion-hours').attr('ojt-completion-id', data.item.id);
+                    }
+
+                    // Update comment text box, so we can get the date in there too
+                    commentroot.find('.ojt-completion-comment').val(data.item.comment);
+                    commentroot.find('.ojt-completion-hours').val(data.item.hours);
+                    // Update the comment print box
+                    commentroot.find('.ojt-completion-comment-print').html(data.item.comment);
+
+                    commentroot.siblings('.mod-ojt-modifiedstr').html(data.modifiedstr);
 
                     $(completionimg).next('.ojt-completion-comment').focus();
                 },
